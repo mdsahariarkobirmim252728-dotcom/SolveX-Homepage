@@ -1,0 +1,200 @@
+/* বেসিক স্টাইল এবং ফন্ট */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+}
+
+/* হিরো সেকশন এবং ব্যাকগ্রাউন্ড ইমেজ */
+.hero-section {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('img/background.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- ১. রঙিন SolveX লোগো --- */
+.logo {
+    font-size: 40px;
+    font-weight: 800; /* আরও মোটা ফন্ট */
+    /* বর্ণিল টেক্সট তৈরির জন্য গ্র্যাডিয়েন্ট */
+    background: linear-gradient(45deg, #e6a53c, #df8f7b, #15d9c2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+
+/* --- ২. নেভিগেশন বার এবং Login বাটনকে Register এর মতো করা --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+}
+
+.navbar nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.navbar nav ul li {
+    margin-left: 30px; /* লিঙ্কগুলোর মধ্যে দূরত্ব বাড়ানো হলো */
+}
+
+/* --- ৩. হোভার ইফেক্ট আরও প্রাণবন্ত করা --- */
+.navbar nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+    padding-bottom: 5px;
+    position: relative;
+    transition: all 0.3s ease-in-out; /* ট্রানজিশন আরও স্মুথ করা হলো */
+}
+
+.navbar nav ul li a:hover {
+    color: #fca311;
+    transform: translateY(-5px); /* আরেকটু বেশি উপরে উঠবে */
+}
+
+/* লিঙ্কগুলোর নিচের আন্ডারলাইন ইফেক্ট */
+.navbar nav ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%; /* মাঝখান থেকে শুরু হবে */
+    transform: translateX(-50%);
+    background-color: #110b01;
+    transition: width 0.4s ease;
+}
+
+.navbar nav ul li a:hover::after {
+    width: 100%;
+}
+
+/* Login এবং Register বাটন */
+.login-btn, .register-btn {
+    padding: 10px 22px;
+    border-radius: 5px;
+    font-weight: bold !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.login-btn {
+    background-color: #f00417; /* Login বাটনের জন্য লাল রঙ */
+    color: rgb(14, 0, 0) !important;
+}
+
+.register-btn {
+    background-color: #fca311;
+    color: #00030a !important;
+}
+
+.login-btn:hover, .register-btn:hover {
+    transform: translateY(-5px) rotate(-2deg); /* উপরে উঠবে এবং হালকা বাঁকা হবে */
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.4); /* ছায়া আরও স্পষ্ট হবে */
+}
+
+.login-btn:active, .register-btn:active {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+/* মূল কন্টেন্ট */
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 50px;
+    gap: 20px; /* দুটি অংশের মধ্যে গ্যাপ */
+}
+
+.hero-text {
+    max-width: 50%;
+}
+
+.hero-text h1 {
+    font-size: 64px; /* লেখার সাইজ বড় করা হলো */
+    font-weight: 800;
+    margin-bottom: 20px;
+    line-height: 1.2; /* লাইনগুলোর মধ্যে দূরত্ব কমানো হলো */
+}
+
+/* --- ৪. সাবটাইটেল (Your one-stop...) সুন্দর করা --- */
+.hero-text p {
+    font-size: 20px; /* ফন্ট সাইজ একটু কমানো হলো */
+    font-style: italic; 
+    color: #f4cccc;
+    background-color: #0952b8; /* একটি সুন্দর নীল রঙ */
+    padding: 10px 15px; /* বক্সের ভেতরে জায়গা */
+    border-radius: 8px; /* কোণাগুলো হালকা গোল করা হলো */
+    display: inline-block; /* লেখা যতটুকু, বক্স ততটুকু হবে */
+    margin-bottom: 40px;
+    box-shadow: 0 4px 8px rgba(20, 20, 20, 0.3); /* বক্সের নিচে ছায়া */
+    border-left: 5px solid #adee08; /* বাম পাশে একটি ভিন্ন নীল বর্ডার */
+}
+
+/* Get Started বাটন */
+.cta-button {
+    display: inline-block;
+    padding: 18px 40px;
+    background-color: #fca311;
+    color: #14213d;
+    text-decoration: none;
+    font-size: 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.cta-button:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+}
+
+
+/* --- ৫. ফিচার লিস্ট বামে সরানো --- */
+.features-list {
+    max-width: 45%;
+    align-self: center; /* এটি যেন মাঝখানে থাকে */
+}
+
+.features-list ul {
+    list-style: none;
+    padding: 0;
+    font-size: 20px;
+}
+
+.features-list ul li {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    background: rgba(9, 9, 9, 0.2); /* হালকা ব্যাকগ্রাউন্ড */
+    padding: 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.features-list ul li:hover {
+    transform: translateX(-10px); /* হোভার করলে বামে সরবে */
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.features-list .fa-check-circle {
+    color: #2a9d8f;
+    margin-right: 15px;
+    font-size: 24px;
+}
