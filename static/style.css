@@ -361,10 +361,14 @@ body {
     max-width: 450px;
     text-align: center;
 }
-
+.auth-form-wrapper h1 {
+    font-size: 28px;
+    color: #096af1; 
+    margin-bottom: 10px;
+}
 .auth-form-wrapper h2 {
     font-size: 28px;
-    color: #0a67eb;
+    color: #096af1; 
     margin-bottom: 10px;
 }
 
