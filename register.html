@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - SolveX</title>
+    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="auth-page-body">
+
+    <!-- নেভিগেশন বার -->
+    <header class="navbar">
+        <div class="logo">SolveX</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="browse.html">Browse Problems</a></li>
+                <li><a href="login.html" class="login-btn">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- রেজিস্ট্রেশন ফর্ম -->
+    <main class="auth-container">
+        <div class="auth-form-wrapper">
+            <h2>Create Your Account</h2>
+            <h3>SolveX </h3>
+            
+            <!-- ফর্মের কোড শুরু -->
+            <form class="auth-form" id="registerForm" onsubmit="return validateForm()">
+                <!-- ভুলের মেসেজ দেখানোর জন্য এই বক্সটি -->
+                <div id="error-message" class="error-box"></div>
+
+                <div class="input-group">
+                    <label for="fullname*"><i class="fas fa-user"></i> Full Name</label>
+                    <input type="text" id="fullname" placeholder="Enter your full name">
+                </div>
+                <div class="input-group">
+                    <label for="email*"><i class="fas fa-envelope"></i> Email Address</label>
+                    <input type="text" id="email" placeholder="Enter your email">
+                </div>
+                <div class="input-group">
+                    <label for="password*"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="password" placeholder="At least 6 characters">
+                </div>
+                <div class="input-group">
+                    <label for="confirm-password*"><i class="fas fa-lock"></i> Confirm Password</label>
+                    <input type="password" id="confirm-password" placeholder="Confirm your password">
+                </div>
+                
+                <button type="submit" class="auth-button">Register</button>
+            </form>
+            <!-- ফর্মের কোড শেষ -->
+
+            <div class="auth-switch">
+                <p>Already have an account? <a href="login.html">Login here</a></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- =========================================
+         JavaScript ভ্যালিডেশন কোড
+    ========================================== -->
+    <script>
+        function validateForm() {
+            // ইনপুট ফিল্ড এবং এরর বক্সকে ধরা
+            const fullname = document.getElementById('fullname').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const errorBox = document.getElementById('error-message');
+
+            // শুরু করার আগে ভুলের বক্সটি লুকিয়ে রাখা এবং খালি করা
+            errorBox.style.display = 'none';
+            errorBox.innerHTML = '';
+
+            // একটি খালি অ্যারে, যেখানে সব ভুলের মেসেজ জমা হবে
+            let errorMessages = [];
+
+            // --- প্রতিটি নিয়ম আলাদা আলাদাভাবে পরীক্ষা করা শুরু ---
+
+            // নিয়ম ১: নাম খালি কিনা?
+            if (fullname === '') {
+                errorMessages.push('Full Name is required.');
+            }
+            
+            // নিয়ম ২: ইমেইল খালি বা ভুল ফরম্যাটের কিনা?
+            if (email === '') {
+                errorMessages.push('Email Address is required.');
+            } else {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    errorMessages.push('Please enter a valid email address (e.g., user@example.com).');
+                }
+            }
+            
+            // নিয়ম ৩: পাসওয়ার্ড খালি বা ছোট কিনা?
+            if (password === '') {
+                errorMessages.push('Password is required.');
+            } else if (password.length < 6) {
+                errorMessages.push('Password must be at least 6 characters long.');
+            }
+
+            // নিয়ম ৪: কনফার্ম পাসওয়ার্ড খালি কিনা?
+            if (confirmPassword === '') {
+                errorMessages.push('Please confirm your password.');
+            }
+            
+            // নিয়ম ৫: পাসওয়ার্ড দুটি মিলেছে কিনা (শুধুমাত্র যদি দুটোই খালি না থাকে)
+            if (password !== '' && confirmPassword !== '' && password !== confirmPassword) {
+                // এই মেসেজটি শুধুমাত্র তখনই যোগ হবে যদি আগের পাসওয়ার্ড সংক্রান্ত কোনো ভুল না থাকে
+                if (!errorMessages.some(msg => msg.includes('Password'))) {
+                   errorMessages.push('Passwords do not match.');
+                }
+            }
+
+            // --- পরীক্ষা করা শেষ ---
+
+            // যদি একটিও ভুল পাওয়া যায়
+            if (errorMessages.length > 0) {
+                errorBox.innerHTML = errorMessages.join('<br>'); // সব ভুলকে সুন্দর করে দেখানো
+                errorBox.style.display = 'block'; // ভুলের বক্সটিকে দৃশ্যমান করা
+                return false; // ফর্ম সাবমিট হওয়া আটকে দেওয়া
+            }
+            
+            // যদি কোনো ভুল না থাকে
+            alert('Registration successful! (Simulation)');
+            // ভবিষ্যতে এই return false; লাইনটি তুলে দেওয়া হবে এবং ফর্ম সাবমিট হবে।
+            return false;
+        }
+    </script>
+</body>
+</html>
