@@ -21,7 +21,9 @@ body {
     font-size: 40px;
     font-weight: 800; /* আরও মোটা ফন্ট */
     /* বর্ণিল টেক্সট তৈরির জন্য গ্র্যাডিয়েন্ট */
-    background: linear-gradient(45deg, #e6a53c, #df8f7b, #15d9c2);
+ background: linear-gradient(45deg, #00ffcc, #556671, #cc00ff);
+-webkit-text-stroke: 1px white;
+
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -197,4 +199,140 @@ body {
     color: #2a9d8f;
     margin-right: 15px;
     font-size: 24px;
+}
+/* =========================================
+   Browse Page Specific Styles
+========================================= */
+
+/* নতুন পেজের বডির জন্য আলাদা ব্যাকগ্রাউন্ড */
+.browse-page-body {
+    background-color: #94b5e6; 
+    color: #333; /* ডিফল্ট টেক্সট কালার কালো */
+}
+
+.browse-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* সার্চ বার স্টাইল */
+.filter-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 40px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(122, 102, 102, 0.08);
+}
+.filter-bar input {
+    flex-grow: 1;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.filter-bar button {
+    padding: 12px 25px;
+    background-color: #14213d;
+    color: #f3efef;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.filter-bar button:hover {
+    background-color: #003566;
+}
+
+/* প্রব্লেম কার্ডের গ্রিড */
+.problem-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+/* প্রতিটি প্রব্লেম কার্ডের স্টাইল */
+.problem-card {
+    background: #c4bbbb;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(100, 99, 99, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+.problem-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+.problem-card h3 {
+    font-size: 20px;
+    margin-top: 0;
+    color: #1d3557;
+}
+.problem-description {
+    font-size: 15px;
+    color: #050505;
+    line-height: 1.6;
+    flex-grow: 1;
+}
+.card-footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+.budget {
+    background-color: #2a9d8f;
+    color: #d1b5e8;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 14px;
+}
+.tag {
+    background-color: #eceeef;
+    color: #090a0a;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+}
+/* Post a New Problem বাটনের জন্য স্টাইল */
+.post-problem-btn {
+    padding: 12px 25px;
+    background-color: #f7f6f5;
+    color: #ebeef3;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap; /* লেখা যেন এক লাইনে থাকে */
+}
+
+.post-problem-btn i {
+    margin-right: 8px;
+}
+
+.post-problem-btn:hover {
+    background-color: #f0eceb;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* সার্চ বাটনের জন্য একটি ক্লাস যোগ করে নিচ্ছি */
+.search-btn {
+    background-color: #81a10a;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 12px 25px;
 }
