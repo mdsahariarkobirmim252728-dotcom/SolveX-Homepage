@@ -1,12 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SolveX - Freelancing Marketplace</title>
-    <!-- সঠিক CSS লিঙ্ক -->
-    <link rel="stylesheet" href="./static/style.css">
-    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -17,13 +16,10 @@
             <div class="logo">SolveX</div>
             <nav>
                 <ul>
-                    <!-- নেভিগেশন বারের লিঙ্কগুলোও আপডেট করা হলো -->
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="browse.html">Browse Problems</a></li>
-                    <li><a href="login.html" class="login-btn">Login</a></li>
-                    <!-- এই লাইনটি পরিবর্তন করুন -->
-                    <li><a href="register.html" class="register-btn">Register</a></li>
-
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'browse_problems' %}">Browse Problems</a></li>
+                    <li><a href="{% url 'login' %}" class="login-btn">Login</a></li>
+                    <li><a href="{% url 'register' %}" class="register-btn">Register</a></li>
                 </ul>
             </nav>
         </header>
@@ -33,8 +29,7 @@
             <div class="hero-text">
                 <h1>Find Solutions, Solve Problems</h1>
                 <p>Your one-stop marketplace for small-scale problem-solving.</p>
-                <!-- "Get Started" বাটনের লিঙ্কটি এখানে আপডেট করা হয়েছে -->
-                <a href="browse.html" class="cta-button">Get Started</a>
+                <a href="{% url 'browse_problems' %}" class="cta-button">Get Started</a>
             </div>
             <div class="features-list">
                 <ul>

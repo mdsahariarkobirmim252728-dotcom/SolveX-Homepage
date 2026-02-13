@@ -443,5 +443,4 @@ body {
     margin-bottom: 20px;
     text-align: left;
     font-size: 15px;
-    display: none; /* গুরুত্বপূর্ণ: স্বাভাবিক অবস্থায় এটি অদৃশ্য থাকবে */
-}
+    display: none; 
