@@ -2,60 +2,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Browse Problems - SolveX</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Problems - SolveX</title>
+
+  <link rel="stylesheet" href="{% static 'style.css' %}?v={% now 'U' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body class="browse-page-body">
 
-    <header class="navbar">
-        <div class="logo">SolveX</div>
-        <nav>
-            <ul>
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'browse_problems' %}">Browse Problems</a></li>
-                <li><a href="{% url 'login' %}" class="login-btn">Login</a></li>
-                <li><a href="{% url 'register' %}" class="register-btn">Register</a></li>
-            </ul>
-        </nav>
-    </header>
+<header class="navbar browse-topbar">
+  <div class="logo-stack">
+    <div class="logo">SolveX</div>
+    {% if user.is_authenticated %}
+     <a class="mini-profile" href="{% url 'profile' %}" title="My Profile">
+  <span class="mini-avatar">
+    {{ user.first_name|default:user.username|slice:":1"|upper }}
+  </span>
+  <span class="mini-profile-text">My Profile</span>
+</a>
+    {% endif %}
+  </div>
 
-    <main class="browse-container">
-        <div class="filter-bar">
-            <input type="text" placeholder="Search for problems...">
-            <button class="search-btn"><i class="fas fa-search"></i> Search</button>
-            <button class="post-problem-btn" onclick="showLoginAlert()"><i class="fas fa-plus-circle"></i> Post a New Problem</button>
-        </div>
-        <div class="problem-grid">
-            <!-- Problem Card 1 (এগুলো এখন ডামি কন্টেন্ট) -->
-            <div class="problem-card">
-                <h3>Need a Python script to organize files</h3>
-                <p class="problem-description">I have a folder with thousands of files and I need a script to sort them into subfolders based on file type.</p>
-                <div class="card-footer">
-                    <span class="budget">$25</span>
-                    <span class="tag">Python</span>
-                    <span class="tag">Automation</span>
-                </div>
+  <nav>
+    <ul>
+      <li><a href="{% url 'home' %}">Home</a></li>
+
+      {% if user.is_authenticated %}
+        <li class="kebab">
+          <details>
+            <summary>≡</summary>
+            <div class="kebab-menu">
+              <a href="{% url 'dashboard' %}">Dashboard</a>
+              <a href="{% url 'settings' %}">Settings</a>
+              <a href="{% url 'logout' %}">Logout</a>
             </div>
-            <!-- Problem Card 2 -->
-            <div class="problem-card">
-                <h3>Fix CSS layout issue on my website</h3>
-                <p class="problem-description">My website's footer is not sticking to the bottom of the page on mobile view. Need someone to fix the CSS.</p>
-                <div class="card-footer">
-                    <span class="budget">$15</span>
-                    <span class="tag">CSS</span>
-                    <span class="tag">Web Design</span>
-                </div>
-            </div>
+          </details>
+        </li>
+      {% else %}
+        <li><a href="{% url 'login' %}" class="login-btn">Login</a></li>
+        <li><a href="{% url 'register' %}" class="register-btn">Register</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+</header>
+
+<main class="browse-container">
+
+  {% if messages %}
+    <div class="success-box" style="display:block;">
+      {% for message in messages %}
+        {{ message }}<br>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="filter-bar">
+    <input type="text" placeholder="Search for problems... (demo)">
+    <button class="search-btn"><i class="fas fa-search"></i> Search</button>
+
+    {% if user.is_authenticated %}
+      <a class="post-problem-btn" href="{% url 'post_problem' %}">
+        <i class="fas fa-plus-circle"></i> Post a New Problem
+      </a>
+    {% else %}
+      <a class="post-problem-btn" href="{% url 'login' %}">
+        <i class="fas fa-plus-circle"></i> Login to Post
+      </a>
+    {% endif %}
+  </div>
+
+  <div class="problem-grid">
+    {% for p in problems %}
+      <div class="problem-card">
+        <h3>
+    <a href="{% url 'problem_detail' p.id %}" class="problem-title-link">
+        {{ p.title }}
+    </a>
+</h3>
+        <p class="problem-description">{{ p.description|truncatechars:140 }}</p>
+        <div class="card-footer">
+          <span class="budget">${{ p.budget }}</span>
+          <span class="tag">New</span>
         </div>
-    </main>
-    
-    <script>
-        function showLoginAlert() {
-            alert("You need to login or register to post a problem!");
-        }
-    </script>
+      </div>
+    {% empty %}
+      <p>No problems posted yet.</p>
+    {% endfor %}
+  </div>
+
+</main>
+
 </body>
 </html>

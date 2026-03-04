@@ -1,0 +1,189 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Settings - SolveX</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}?v={% now 'U' %}">
+  
+  <style>
+    /* বেসিক স্টাইল */
+    body { background-color: #f4f6f9; font-family: sans-serif; }
+    .auth-form-wrapper { max-width: 500px; background: #fff; padding: 30px; margin: 40px auto; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    
+    /* মেনু আইটেম স্টাইল */
+    .menu-item {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 20px 15px; /* একটু প্যাডিং বাড়ালাম যাতে দেখতে ভালো লাগে */
+        border-bottom: 1px solid #eee; cursor: pointer;
+        transition: background 0.2s;
+    }
+    .menu-item:hover { background-color: #f8f9fa; }
+    .menu-item:last-child { border-bottom: none; }
+    .arrow { color: #ccc; font-weight: bold; }
+
+    /* সেকশন গুলো শুরুতে হাইড থাকবে */
+    .settings-section { display: none; }
+    #section-main { display: block; }
+
+    /* ফর্ম ইনপুট */
+    .form-control { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+    .btn-save { width: 100%; padding: 12px; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 16px; }
+    .btn-blue { background-color: #007bff; }
+    .btn-red { background-color: #dc3545; }
+
+    /* ব্যাক বাটন */
+    .back-btn { background: none; border: none; color: #007bff; cursor: pointer; font-size: 14px; margin-bottom: 15px; padding: 0; display: inline-flex; align-items: center; }
+    .back-btn:hover { text-decoration: underline; }
+
+    /* অ্যালার্ট মেসেজ */
+    .alert { padding: 12px; margin-bottom: 20px; border-radius: 4px; font-size: 14px; text-align: center; }
+    .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .alert-error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+  </style>
+</head>
+<body class="auth-page-body">
+
+  <header class="navbar">
+    <div class="logo">SolveX</div>
+    <nav>
+      <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'browse_problems' %}">Browse Problems</a></li>
+        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'logout' %}" class="login-btn">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="auth-container">
+    <div class="auth-form-wrapper">
+
+      <!-- মেসেজ দেখানোর জায়গা -->
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <!-- ========================================= -->
+      <!-- ১. মেইন সেটিংস পেজ (Main Page) -->
+      <!-- ========================================= -->
+      <div id="section-main" class="settings-section">
+        <h2 style="margin-bottom: 20px;">⚙️ Settings</h2>
+        
+        <!-- Privacy & Security বাটন (সাব-টেক্সট সরানো হয়েছে) -->
+        <div class="menu-item" onclick="showPrivacyMenu()">
+            <div>
+                <h4 style="margin: 0; font-size: 16px; color: #333;">🔒 Privacy & Security</h4>
+            </div>
+            <div class="arrow">❯</div>
+        </div>
+      
+      <!-- ========================================= -->
+      <!-- ২. প্রাইভেসি মেনু (Privacy Menu) -->
+      <!-- ========================================= -->
+      <div id="section-privacy-menu" class="settings-section">
+        <button class="back-btn" onclick="showMain()">← Back to Settings</button>
+        <h3 style="margin-bottom: 20px;">Privacy & Security</h3>
+
+        <div class="menu-item" onclick="showEmailForm()">
+            <h4 style="margin: 0; font-size: 15px; color: #333;">📧 Change Email</h4>
+            <div class="arrow">❯</div>
+        </div>
+
+        <div class="menu-item" onclick="showPasswordForm()">
+            <h4 style="margin: 0; font-size: 15px; color: #333;">🔑 Change Password</h4>
+            <div class="arrow">❯</div>
+        </div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- ৩(ক). ইমেইল চেঞ্জ ফর্ম (Email Form) -->
+      <!-- ========================================= -->
+      <div id="section-email-form" class="settings-section">
+        <button class="back-btn" onclick="showPrivacyMenu()">← Back</button>
+        <h3 style="color: #007bff; margin-bottom: 15px;">Update Email</h3>
+        <p style="font-size: 13px; color: #666; margin-bottom: 20px;">Current: <strong>{{ request.user.email }}</strong></p>
+
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="change_email">
+            
+            <label style="display:block; margin-bottom:5px; font-weight:bold;">New Email</label>
+            <input type="email" name="email" required class="form-control" placeholder="example@email.com">
+            
+            <label style="display:block; margin-bottom:5px; font-weight:bold;">Confirm Password</label>
+            <input type="password" name="password_for_email" required class="form-control" placeholder="Enter current password">
+            
+            <button type="submit" class="btn-save btn-blue">Save Changes</button>
+        </form>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- ৩(খ). পাসওয়ার্ড চেঞ্জ ফর্ম (Password Form) -->
+      <!-- ========================================= -->
+      <div id="section-password-form" class="settings-section">
+        <button class="back-btn" onclick="showPrivacyMenu()">← Back</button>
+        <h3 style="color: #dc3545; margin-bottom: 15px;">Change Password</h3>
+
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="change_password">
+            
+            <label style="display:block; margin-bottom:5px; font-weight:bold;">Old Password</label>
+            <input type="password" name="old_password" required class="form-control">
+            
+            <label style="display:block; margin-bottom:5px; font-weight:bold;">New Password</label>
+            <input type="password" name="new_password" required class="form-control" placeholder="Min 6 characters">
+            
+            <label style="display:block; margin-bottom:5px; font-weight:bold;">Confirm New Password</label>
+            <input type="password" name="confirm_password" required class="form-control">
+            
+            <button type="submit" class="btn-save btn-red">Update Password</button>
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- জাভাস্ক্রিপ্ট নেভিগেশন লজিক -->
+  <script>
+    function hideAll() {
+        document.getElementById('section-main').style.display = 'none';
+        document.getElementById('section-privacy-menu').style.display = 'none';
+        document.getElementById('section-email-form').style.display = 'none';
+        document.getElementById('section-password-form').style.display = 'none';
+    }
+
+    function showMain() {
+        hideAll();
+        document.getElementById('section-main').style.display = 'block';
+    }
+
+    function showPrivacyMenu() {
+        hideAll();
+        document.getElementById('section-privacy-menu').style.display = 'block';
+    }
+
+    function showEmailForm() {
+        hideAll();
+        document.getElementById('section-email-form').style.display = 'block';
+    }
+
+    function showPasswordForm() {
+        hideAll();
+        document.getElementById('section-password-form').style.display = 'block';
+    }
+
+    // মেসেজ থাকলে ফর্ম ওপেন রাখা
+    {% if messages %}
+        showPrivacyMenu(); // অথবা আপনি চাইলে সরাসরি showMain() রাখতে পারেন
+    {% endif %}
+  </script>
+
+</body>
+</html>

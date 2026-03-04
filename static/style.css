@@ -1,17 +1,25 @@
-/* বেসিক স্টাইল এবং ফন্ট */
+/* =========================================
+   বেসিক স্টাইল এবং ফন্ট
+========================================= */
+/* TEST-KOBIR-123 */
+* { box-sizing: border-box; }
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    color: #fff;
+    color: #111; /* ডিফল্ট টেক্সট কালার */
 }
 
-/* হিরো সেকশন এবং ব্যাকগ্রাউন্ড ইমেজ */
+/* =========================================
+   হিরো সেকশন এবং ব্যাকগ্রাউন্ড ইমেজ (Home Page)
+========================================= */
 .hero-section {
+    color: #fff; /* Home page-এ লেখা সাদা থাকবে */
     background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('img/background.jpg');
     background-size: cover;
     background-position: center;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
@@ -19,19 +27,17 @@ body {
 /* --- ১. রঙিন SolveX লোগো --- */
 .logo {
     font-size: 40px;
-    font-weight: 800; /* আরও মোটা ফন্ট */
-    /* বর্ণিল টেক্সট তৈরির জন্য গ্র্যাডিয়েন্ট */
- background: linear-gradient(45deg, #00ffcc, #556671, #cc00ff);
--webkit-text-stroke: 1px white;
-
+    font-weight: 800;
+    background: linear-gradient(45deg, #00ffcc, #556671, #cc00ff);
+    -webkit-text-stroke: 1px white;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-fill-color: transparent;
 }
 
-
-/* --- ২. নেভিগেশন বার এবং Login বাটনকে Register এর মতো করা --- */
+/* =========================================
+   নেভিগেশন বার (Navbar)
+========================================= */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -39,44 +45,42 @@ body {
     padding: 20px 50px;
 }
 
+/* ul */
 .navbar nav ul {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
     align-items: center;
+    gap: 18px; /* margin-left এর বদলে gap */
 }
 
-.navbar nav ul li {
-    margin-left: 30px; /* লিঙ্কগুলোর মধ্যে দূরত্ব বাড়ানো হলো */
-}
-
-/* --- ৩. হোভার ইফেক্ট আরও প্রাণবন্ত করা --- */
+/* লিঙ্ক স্টাইল (Home page এর জন্য) */
 .navbar nav ul li a {
     text-decoration: none;
-    color: #fff;
-    font-weight: 500;
+    color: #fff; /* Home page-এর navbar এ সাদা */
+    font-weight: 600;
     padding-bottom: 5px;
     position: relative;
-    transition: all 0.3s ease-in-out; /* ট্রানজিশন আরও স্মুথ করা হলো */
+    transition: all 0.25s ease-in-out;
 }
 
 .navbar nav ul li a:hover {
     color: #fca311;
-    transform: translateY(-5px); /* আরেকটু বেশি উপরে উঠবে */
+    transform: translateY(-2px);
 }
 
-/* লিঙ্কগুলোর নিচের আন্ডারলাইন ইফেক্ট */
+/* আন্ডারলাইন ইফেক্ট */
 .navbar nav ul li a::after {
     content: '';
     position: absolute;
     width: 0;
     height: 2px;
-    bottom: 0;
-    left: 50%; /* মাঝখান থেকে শুরু হবে */
+    bottom: -3px;
+    left: 50%;
     transform: translateX(-50%);
     background-color: #110b01;
-    transition: width 0.4s ease;
+    transition: width 0.25s ease;
 }
 
 .navbar nav ul li a:hover::after {
@@ -86,15 +90,15 @@ body {
 /* Login এবং Register বাটন */
 .login-btn, .register-btn {
     padding: 10px 22px;
-    border-radius: 5px;
-    font-weight: bold !important;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    font-weight: 800 !important;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .login-btn {
-    background-color: #f00417; /* Login বাটনের জন্য লাল রঙ */
-    color: rgb(14, 0, 0) !important;
+    background-color: #f00417;
+    color: #0e0000 !important;
 }
 
 .register-btn {
@@ -103,49 +107,43 @@ body {
 }
 
 .login-btn:hover, .register-btn:hover {
-    transform: translateY(-5px) rotate(-2deg); /* উপরে উঠবে এবং হালকা বাঁকা হবে */
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.4); /* ছায়া আরও স্পষ্ট হবে */
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.35);
 }
 
-.login-btn:active, .register-btn:active {
-    transform: translateY(0) scale(1);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-
-/* মূল কন্টেন্ট */
+/* =========================================
+   Home page এর main section
+========================================= */
 .main-content {
     flex-grow: 1;
     display: flex;
     align-items: center;
     justify-content: space-around;
     padding: 0 50px;
-    gap: 20px; /* দুটি অংশের মধ্যে গ্যাপ */
+    gap: 20px;
 }
 
-.hero-text {
-    max-width: 50%;
-}
+.hero-text { max-width: 50%; }
 
 .hero-text h1 {
-    font-size: 64px; /* লেখার সাইজ বড় করা হলো */
+    font-size: 64px;
     font-weight: 800;
-    margin-bottom: 20px;
-    line-height: 1.2; /* লাইনগুলোর মধ্যে দূরত্ব কমানো হলো */
+    margin-bottom: 18px;
+    line-height: 1.2;
 }
 
-/* --- ৪. সাবটাইটেল (Your one-stop...) সুন্দর করা --- */
+/* সাবটাইটেল */
 .hero-text p {
-    font-size: 20px; /* ফন্ট সাইজ একটু কমানো হলো */
-    font-style: italic; 
+    font-size: 20px;
+    font-style: italic;
     color: #f4cccc;
-    background-color: #0952b8; /* একটি সুন্দর নীল রঙ */
-    padding: 10px 15px; /* বক্সের ভেতরে জায়গা */
-    border-radius: 8px; /* কোণাগুলো হালকা গোল করা হলো */
-    display: inline-block; /* লেখা যতটুকু, বক্স ততটুকু হবে */
-    margin-bottom: 40px;
-    box-shadow: 0 4px 8px rgba(20, 20, 20, 0.3); /* বক্সের নিচে ছায়া */
-    border-left: 5px solid #adee08; /* বাম পাশে একটি ভিন্ন নীল বর্ডার */
+    background-color: #0952b8;
+    padding: 10px 15px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 8px rgba(20, 20, 20, 0.3);
+    border-left: 5px solid #adee08;
 }
 
 /* Get Started বাটন */
@@ -156,193 +154,201 @@ body {
     color: #14213d;
     text-decoration: none;
     font-size: 20px;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    font-weight: 900;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .cta-button:hover {
-    transform: translateY(-4px) scale(1.05);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 14px rgba(0, 0, 0, 0.3);
 }
 
-
-/* --- ৫. ফিচার লিস্ট বামে সরানো --- */
-.features-list {
-    max-width: 45%;
-    align-self: center; /* এটি যেন মাঝখানে থাকে */
-}
+/* ফিচার লিস্ট */
+.features-list { max-width: 45%; }
 
 .features-list ul {
     list-style: none;
     padding: 0;
-    font-size: 20px;
+    font-size: 18px;
+    margin: 0;
 }
 
 .features-list ul li {
-    margin-bottom: 20px;
+    margin-bottom: 14px;
     display: flex;
     align-items: center;
-    background: rgba(9, 9, 9, 0.2); /* হালকা ব্যাকগ্রাউন্ড */
-    padding: 15px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+    gap: 12px;
+    background: rgba(9, 9, 9, 0.25);
+    padding: 12px 14px;
+    border-radius: 10px;
+    transition: all 0.25s ease;
 }
 
 .features-list ul li:hover {
-    transform: translateX(-10px); /* হোভার করলে বামে সরবে */
-    background: rgba(0, 0, 0, 0.4);
+    transform: translateX(-6px);
+    background: rgba(0, 0, 0, 0.35);
 }
 
 .features-list .fa-check-circle {
     color: #2a9d8f;
-    margin-right: 15px;
-    font-size: 24px;
+    font-size: 22px;
 }
+
 /* =========================================
    Browse Page Specific Styles
 ========================================= */
-
-/* নতুন পেজের বডির জন্য আলাদা ব্যাকগ্রাউন্ড */
 .browse-page-body {
-    background-color: #94b5e6; 
-    color: #333; /* ডিফল্ট টেক্সট কালার কালো */
+    background-color: #94b5e6;
+    color: #111;
 }
 
+/* Browse page এ navbar link কালো/ডার্ক */
+.browse-page-body .navbar nav ul li a {
+    color: #14213d;
+}
+
+/* Browse container */
 .browse-container {
     max-width: 1200px;
-    margin: 40px auto;
+    margin: 30px auto;
     padding: 0 20px;
 }
 
-/* সার্চ বার স্টাইল */
+/* সার্চ বার */
 .filter-bar {
     display: flex;
     gap: 10px;
-    margin-bottom: 40px;
+    margin-bottom: 24px;
     background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(122, 102, 102, 0.08);
-}
-.filter-bar input {
-    flex-grow: 1;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-}
-.filter-bar button {
-    padding: 12px 25px;
-    background-color: #14213d;
-    color: #f3efef;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-.filter-bar button:hover {
-    background-color: #003566;
+    padding: 16px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    align-items: center;
 }
 
-/* প্রব্লেম কার্ডের গ্রিড */
+.filter-bar input {
+    flex-grow: 1;
+    padding: 12px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+/* সার্চ বাটন */
+.search-btn {
+    padding: 12px 16px;
+    background-color: #160252;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Post a New Problem বাটনের স্টাইল (এটা <a> tag) */
+.post-problem-btn {
+    padding: 12px 16px;
+    background-color: #160252;
+    color: #f5f6f9;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 900;
+    cursor: pointer;
+    white-space: nowrap;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.25s ease;
+}
+
+.post-problem-btn:hover {
+    background-color: #81a10a;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* Problem grid */
 .problem-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
+    gap: 18px;
 }
 
-/* প্রতিটি প্রব্লেম কার্ডের স্টাইল */
+/* Problem card */
 .problem-card {
-    background: #c4bbbb;
-    border-radius: 8px;
-    padding: 25px;
-    box-shadow: 0 4px 12px rgba(100, 99, 99, 0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: #f37474;
+    border-radius: 10px;
+    padding: 18px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+    transition: 0.2s ease;
     display: flex;
     flex-direction: column;
 }
+
 .problem-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px);
 }
+
 .problem-card h3 {
     font-size: 20px;
     margin-top: 0;
     color: #1d3557;
 }
+
 .problem-description {
     font-size: 15px;
     color: #050505;
     line-height: 1.6;
     flex-grow: 1;
+    margin: 0;
 }
+
 .card-footer {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-top: 20px;
+    margin-top: 14px;
     border-top: 1px solid #eee;
-    padding-top: 15px;
+    padding-top: 12px;
 }
+
 .budget {
     background-color: #2a9d8f;
-    color: #d1b5e8;
+    color: #fff;
     padding: 5px 12px;
-    border-radius: 15px;
-    font-weight: bold;
-    font-size: 14px;
+    border-radius: 999px;
+    font-weight: 900;
+    font-size: 13px;
 }
+
 .tag {
     background-color: #eceeef;
     color: #090a0a;
     padding: 5px 12px;
-    border-radius: 15px;
+    border-radius: 999px;
     font-size: 12px;
-}
-/* Post a New Problem বাটনের জন্য স্টাইল */
-.post-problem-btn {
-    padding: 12px 25px;
-    background-color: #f7f6f5;
-    color: #ebeef3;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    white-space: nowrap; /* লেখা যেন এক লাইনে থাকে */
+    font-weight: 700;
 }
 
-.post-problem-btn i {
-    margin-right: 8px;
-}
-
-.post-problem-btn:hover {
-    background-color: #f0eceb;
-    color: #fff;
-    transform: translateY(-2px);
-}
-
-/* সার্চ বাটনের জন্য একটি ক্লাস যোগ করে নিচ্ছি */
-.search-btn {
-    background-color: #81a10a;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    padding: 12px 25px;
-}
 /* =========================================
-   Authentication (Login/Register) Page Styles
+   Authentication (Login/Register/Post) Page Styles
 ========================================= */
-
 .auth-page-body {
     background-color: #d0ddf1;
-    color: #333;
+    color: #111;
+}
+
+/* Auth page এ navbar সাদা */
+.auth-page-body .navbar {
+    background: #fff;
+    box-shadow: 0 4px 14px rgba(0,0,0,.08);
+}
+
+.auth-page-body .navbar nav ul li a {
+    color: #14213d;
 }
 
 .auth-container {
@@ -354,66 +360,55 @@ body {
 
 .auth-form-wrapper {
     background: #fafafa;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 32px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
     width: 100%;
-    max-width: 450px;
+    max-width: 520px;
     text-align: center;
 }
-.auth-form-wrapper h1 {
-    font-size: 28px;
-    color: #096af1; 
-    margin-bottom: 10px;
-}
+
 .auth-form-wrapper h2 {
     font-size: 28px;
-    color: #096af1; 
-    margin-bottom: 10px;
+    color: #096af1;
+    margin: 0 0 10px;
 }
 
-.auth-form-wrapper h3 {
-    font-size: 22px;
-    color: #010711;
-    margin-bottom: 10px;
-}
-
-.auth-form .input-group {
-    margin-bottom: 20px;
+.input-group {
+    margin-bottom: 14px;
     text-align: left;
 }
 
-.auth-form .input-group label {
+.input-group label {
     display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
+    margin-bottom: 6px;
+    font-weight: 700;
 }
 
-.auth-form .input-group i {
-    margin-right: 8px;
-    color: #457b9d;
-}
-
-.auth-form .input-group input {
+.input-group input, .big-textarea {
     width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #eb1a1a;
-    border-radius: 5px;
-    font-size: 16px;
-    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+.big-textarea {
+    min-height: 120px;
+    resize: vertical;
 }
 
 .auth-button {
     width: 100%;
-    padding: 15px;
+    padding: 14px;
     background: #fca311;
     color: #14213d;
     border: none;
-    border-radius: 5px;
-    font-size: 18px;
-    font-weight: bold;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 900;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: 0.25s ease;
 }
 
 .auth-button:hover {
@@ -422,25 +417,156 @@ body {
 }
 
 .auth-switch {
-    margin-top: 25px;
+    margin-top: 16px;
 }
 
 .auth-switch a {
     color: #d71c1c;
-    font-weight: bold;
+    font-weight: 900;
     text-decoration: none;
 }
 
 .auth-switch a:hover {
     text-decoration: underline;
 }
+
+/* =========================================
+   Validation/Error Box
+========================================= */
 .error-box {
-    background-color: #ffebee; /* হালকা লালচে ব্যাকগ্রাউন্ড */
-    color: #c62828;      /* এই লাইনটি টেক্সটকে গাঢ় লাল করবে */
+    background-color: #ffebee;
+    color: #c62828;
     border: 1px solid #c62828;
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 20px;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 14px;
     text-align: left;
     font-size: 15px;
-    display: none; 
+    display: none;
+}
+
+/* Success box (login successful ইত্যাদি দেখাতে) */
+.success-box {
+    max-width: 980px;
+    margin: 14px auto;
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #34d399;
+    font-weight: 900;
+    text-align: center;
+    display: none;
+}
+
+/* =========================================
+   Browse/Dashboard topbar: Logo নিচে Profile + ≡ menu
+   (আপনার চাহিদা অনুযায়ী topbar transparent থাকবে)
+========================================= */
+.browse-topbar {
+    background: transparent;
+    box-shadow: none;
+}
+
+/* logo নিচে profile */
+.logo-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.mini-profile {
+    font-weight: 900;
+    text-decoration: none;
+    color: #14213d;
+    font-size: 14px;
+}
+
+.mini-profile:hover {
+    text-decoration: underline;
+}
+
+/* ≡ menu */
+.kebab { position: relative; }
+
+.kebab details summary {
+    list-style: none;
+    cursor: pointer;
+    font-size: 26px;
+    font-weight: 900;
+    color: #14213d;
+    padding: 6px 10px;
+    border-radius: 8px;
+    user-select: none;
+}
+
+.kebab details summary::-webkit-details-marker {
+    display: none;
+}
+
+.kebab-menu {
+    position: absolute;
+    right: 0;
+    top: 42px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    min-width: 180px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.18);
+    overflow: hidden;
+    z-index: 9999;
+}
+
+.kebab-menu a {
+    display: block;
+    padding: 12px 14px;
+    text-decoration: none;
+    font-weight: 800;
+    color: #14213d;
+}
+
+.kebab-menu a:hover {
+    background: #f0f2f5;
+}
+
+
+/* ===== Profile (Logo এর নিচে) - Circle + Text (FIXED) ===== */
+.mini-profile{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  text-decoration: none;
+  color: #14213d;
+  font-weight: 900;
+  white-space: nowrap; /* My Profile এক লাইনে থাকবে */
+}
+
+.mini-avatar{
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #14213d;
+  color: #fff;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 900;
+  line-height: 1;
+}
+
+.mini-profile-text{
+  font-size: 14px;
+}/* প্রব্লেম টাইটেল লিংক স্টাইল */
+.problem-title-link {
+    text-decoration: none; /* লিংক এর নিচে দাগ থাকবে না */
+    color: #333;           /* শুরুতে কালো রঙের থাকবে */
+    transition: color 0.3s; /* হোভার করলে স্মুথ কালার চেঞ্জ হবে */
+}
+
+.problem-title-link:hover {
+    color: #007bff;        /* মাউস নিলে নীল রঙের হয়ে যাবে */
+    text-decoration: underline; /* মাউস নিলে নিচে দাগ আসবে */
+}

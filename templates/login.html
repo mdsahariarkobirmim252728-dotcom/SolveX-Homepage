@@ -2,65 +2,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - SolveX</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}?v={% now 'U' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body class="auth-page-body">
 
-    <header class="navbar">
-        <div class="logo">SolveX</div>
-        <nav>
-            <ul>
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'browse_problems' %}">Browse Problems</a></li>
-                <li><a href="{% url 'register' %}" class="register-btn">Register</a></li>
-            </ul>
-        </nav>
-    </header>
+<header class="navbar">
+    <div class="logo">SolveX</div>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'browse_problems' %}">Browse Problems</a></li>
+            <li><a href="{% url 'register' %}" class="register-btn">Register</a></li>
+            <li></li><a href="{% url 'forgot_password' %}">Forgot Password?</a>
+        </ul>
+    </nav>
+</header>
 
-    <main class="auth-container">
-        <div class="auth-form-wrapper">
-            <h2>Welcome Back!</h2>
-            <p>Login to your SolveX account.</p>
-            <form class="auth-form" id="loginForm" onsubmit="return validateLoginForm()">
-                <div id="error-message" class="error-box"></div>
-                <div class="input-group">
-                    <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
-                    <input type="text" id="email" placeholder="Enter your email">
-                </div>
-                <div class="input-group">
-                    <label for="password"><i class="fas fa-lock"></i> Password</label>
-                    <input type="password" id="password" placeholder="Enter your password">
-                </div>
-                <button type="submit" class="auth-button">Login</button>
-            </form>
-            <div class="auth-switch">
-                <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+<main class="auth-container">
+    <div class="auth-form-wrapper">
+        <h2>Welcome</h2>
+
+        {% if messages %}
+            <div class="error-box" style="display:block;">
+                {% for message in messages %}
+                    {{ message }}<br>
+                {% endfor %}
             </div>
-        </div>
-    </main>
+        {% endif %}
 
-    <script>
-        function validateLoginForm() {
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
-            const errorBox = document.getElementById('error-message');
-            errorBox.style.display = 'none';
-            errorBox.innerHTML = '';
-            let errorMessages = [];
-            if (email === '') { errorMessages.push('Email Address is required.'); }
-            if (password === '') { errorMessages.push('Password is required.'); }
-            if (errorMessages.length > 0) {
-                errorBox.innerHTML = errorMessages.join('<br>');
-                errorBox.style.display = 'block';
-                return false;
-            }
-            alert('Login successful! (Simulation)');
-            return false;
-        }
-    </script>
+        <form class="auth-form" method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <label><i class="fas fa-envelope"></i> Email Address</label>
+                <input type="text" name="email" placeholder="Enter your email">
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-lock"></i> Password</label>
+                <input type="password" name="password" placeholder="Enter your password">
+            </div>
+
+            <button type="submit" class="auth-button">Login</button>
+        </form>
+
+        <div class="auth-switch">
+            <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+        </div>
+    </div>
+</main>
+
 </body>
 </html>
