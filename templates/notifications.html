@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notifications - SolveX</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}?v={% now 'U' %}">
+</head>
+
+<body class="auth-page-body">
+
+  <header class="navbar">
+    <div class="logo">SolveX</div>
+    <nav>
+      <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+
+        {% if user.is_authenticated %}
+          <li>
+            <a href="{% url 'notifications' %}">
+              Notifications{% if unread_notifications_count %} ({{ unread_notifications_count }}){% endif %}
+            </a>
+          </li>
+        {% endif %}
+
+        <li><a href="{% url 'browse_problems' %}">Browse Problems</a></li>
+
+        {% if user.is_authenticated %}
+          <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+          <li><a href="{% url 'settings' %}">Settings</a></li>
+          <li><a href="{% url 'logout' %}" class="login-btn">Logout</a></li>
+        {% else %}
+          <li><a href="{% url 'login' %}" class="login-btn">Login</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </header>
+
+  {% if messages %}
+    <div class="sx-msg-wrap">
+      {% for message in messages %}
+        <div class="sx-msg">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="sx-page-wrap">
+    <div class="sx-card">
+      <div class="sx-card-header">
+        <h2>Notifications</h2>
+        <div class="sx-unread-pill">Unread: {{ unread_count }}</div>
+        <div style="display:flex; gap:10px; align-items:center;">
+  <div class="sx-unread-pill">Unread: {{ unread_count }}</div>
+
+  <form action="{% url 'notifications_mark_all_read' %}" method="post" style="margin:0;">
+    {% csrf_token %}
+    <button type="submit" style="padding:8px 12px;border:0;border-radius:8px;background:#198754;color:#fff;font-weight:700;cursor:pointer;">
+      Mark all read
+    </button>
+  </form>
+
+  <form action="{% url 'notifications_clear' %}" method="post" style="margin:0;">
+    {% csrf_token %}
+    <button type="submit" onclick="return confirm('Clear all notifications?')" style="padding:8px 12px;border:0;border-radius:8px;background:#dc3545;color:#fff;font-weight:700;cursor:pointer;">
+      Clear
+    </button>
+  </form>
+</div>
+      </div>
+
+      <div class="sx-list">
+        {% for n in notifications %}
+          <a class="sx-notif-item" href="{% url 'open_notification' n.id %}">
+            <div class="sx-notif-top">
+              <div class="sx-notif-msg">{{ n.message }}</div>
+
+              {% if n.is_read == 0 %}
+                <div class="sx-badge-new">NEW</div>
+              {% endif %}
+            </div>
+
+            <div class="sx-notif-meta">
+              {% if n.actor_name %}
+                From: <strong>{{ n.actor_name }}</strong> ({{ n.actor_email }})<br>
+              {% endif %}
+              Time: {{ n.created_at }}<br>
+              Click to open details →
+            </div>
+          </a>
+        {% empty %}
+          <div class="sx-empty">No notifications yet.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,5 +1,3 @@
-# solvex_core/settings.py (সম্পূর্ণ কোড)
-
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,6 +41,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'accounts.context_processors.unread_notifications',
+                
             ],
         },
     },

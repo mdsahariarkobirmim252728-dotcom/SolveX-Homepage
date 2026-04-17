@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Reports - SolveX</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}?v={% now 'U' %}">
+  <style>
+    .wrap { max-width: 1000px; margin: 40px auto; background:#fff; padding: 20px; border:1px solid #eee; border-radius: 10px; }
+    .item { border:1px solid #eee; border-radius:10px; padding:14px; margin-bottom:12px; background:#fafafa; }
+    .muted { color:#666; font-size:13px; }
+    .btn { display:inline-block; padding:8px 10px; border-radius:8px; text-decoration:none; font-weight:900; border:1px solid #ddd; background:#fff; cursor:pointer; }
+    .btn-green { background:#198754; border-color:#198754; color:#fff; }
+    .btn-red { background:#dc3545; border-color:#dc3545; color:#fff; }
+    a.link { color:#0d6efd; text-decoration:none; font-weight:900; }
+    a.link:hover { text-decoration:underline; }
+  </style>
+</head>
+<body class="auth-page-body">
+
+  <header class="navbar">
+    <div class="logo">SolveX</div>
+    <nav>
+      <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'logout' %}" class="login-btn">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="wrap">
+    <h2 style="margin-top:0;">Open Reports</h2>
+
+    {% if reports %}
+      {% for r in reports %}
+        <div class="item">
+          <div><strong>Report #{{ r.id }}</strong> <span class="muted">({{ r.created_at }})</span></div>
+          <div class="muted" style="margin-top:6px;">
+            Reported:
+            <a class="link" href="{% url 'public_profile' r.reported_id %}">
+              {{ r.reported_name }}
+            </a>
+            ({{ r.reported_email }})
+          </div>
+          <div class="muted">
+            Reporter:
+            <a class="link" href="{% url 'public_profile' r.reporter_id %}">
+              {{ r.reporter_name }}
+            </a>
+            ({{ r.reporter_email }})
+          </div>
+
+          {% if r.contract_id %}
+            <div class="muted">Contract ID: {{ r.contract_id }}</div>
+          {% endif %}
+
+          <div style="margin-top:10px; white-space:pre-wrap;">{{ r.reason }}</div>
+
+          <div style="margin-top:12px;">
+            <form method="post" action="{% url 'admin_report_action' r.id 'resolve' %}" style="display:inline;">
+              {% csrf_token %}
+              <button class="btn btn-green" type="submit">Resolve</button>
+            </form>
+
+            <form method="post" action="{% url 'admin_report_action' r.id 'dismiss' %}" style="display:inline; margin-left:8px;">
+              {% csrf_token %}
+              <button class="btn btn-red" type="submit">Dismiss</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="muted">No open reports.</div>
+    {% endif %}
+  </div>
+
+</body>
+</html>

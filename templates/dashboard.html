@@ -5,31 +5,54 @@
   <meta charset="UTF-8">
   <title>Dashboard - SolveX</title>
   <link rel="stylesheet" href="{% static 'style.css' %}?v={% now 'U' %}">
-  
+
   <style>
-    /* ড্যাশবোর্ড স্টাইল */
     .dashboard-container { max-width: 800px; margin: 40px auto; padding: 20px; }
     .welcome-box { background: #e3f2fd; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #2196f3; }
     .problem-card { background: white; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; position: relative; }
-    
-    /* MODAL (POPUP) STYLE - এটা নতুন */
-    .modal {
-        display: none; /* শুরুতে লুকানো */
-        position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
-        background-color: rgba(0,0,0,0.5); /* কালো ব্যাকগ্রাউন্ড */
+
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: 8px;
+      background: #6c757d;
+      color: #fff;
     }
-    .modal-content {
-        background-color: white; margin: 10% auto; padding: 25px; border-radius: 8px;
-        width: 90%; max-width: 500px; position: relative;
-    }
+    .badge-green { background:#28a745; }
+    .badge-orange { background:#ff9800; }
+
+    /* Modal */
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+    .modal-content { background-color: white; margin: 10% auto; padding: 25px; border-radius: 8px; width: 90%; max-width: 500px; position: relative; }
     .close-btn { float: right; font-size: 24px; font-weight: bold; cursor: pointer; color: #aaa; }
     .close-btn:hover { color: black; }
-    
-    /* ফর্ম স্টাইল */
+
     .form-control { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
     .btn-save { width: 100%; padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+
+    .link-btn {
+      text-decoration: none;
+      font-size: 14px;
+      margin-right: 10px;
+      color: #007bff;
+    }
+
+    .action-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0;
+      margin-right: 10px;
+    }
+    .action-btn.edit { color: #007bff; }
+    .action-btn.solve { color: #28a745; }
+    .action-btn.delete { color: #dc3545; margin-right: 0; }
   </style>
 </head>
+
 <body class="auth-page-body">
 
   <header class="navbar">
@@ -37,121 +60,160 @@
     <nav>
       <ul>
         <li><a href="{% url 'home' %}">Home</a></li>
+
+        {% if user.is_authenticated %}
+          <li>
+            <a href="{% url 'notifications' %}">
+              Notifications{% if unread_notifications_count %} ({{ unread_notifications_count }}){% endif %}
+            </a>
+          </li>
+        {% endif %}
+
         <li><a href="{% url 'browse_problems' %}">Browse Problems</a></li>
         <li><a href="{% url 'settings' %}">Settings</a></li>
-        <li><a href="{% url 'logout' %}" class="login-btn">Logout</a></li>
+
+        {% if user.is_authenticated %}
+          <li><a href="{% url 'logout' %}" class="login-btn">Logout</a></li>
+        {% else %}
+          <li><a href="{% url 'login' %}" class="login-btn">Login</a></li>
+        {% endif %}
       </ul>
     </nav>
   </header>
 
   <main class="dashboard-container">
-    
-    <!-- মেসেজ -->
+
     {% if messages %}
-        {% for message in messages %}
-            <div style="padding: 10px; margin-bottom: 10px; border-radius: 5px; background: #d4edda; color: #155724;">
-                {{ message }}
-            </div>
-        {% endfor %}
+      {% for message in messages %}
+        <div style="padding: 10px; margin-bottom: 10px; border-radius: 5px; background: #d4edda; color: #155724;">
+          {{ message }}
+        </div>
+      {% endfor %}
     {% endif %}
 
     <div class="welcome-box">
-        <h2>👋 Welcome, {{ user.first_name }}!</h2>
-        <p>Manage your posted problems here.</p>
-        <a href="{% url 'post_problem' %}" style="text-decoration: underline; color: #007bff;">+ Post a new problem</a>
+      <h2>Welcome, {{ user.first_name }}!</h2>
+      <p>Manage your posted problems here.</p>
+      <a href="{% url 'post_problem' %}" style="text-decoration: underline; color: #007bff;">+ Post a new problem</a>
     </div>
 
     <h3>My Posted Problems</h3>
     <hr style="margin-bottom: 20px; border: 0; border-top: 1px solid #ddd;">
 
     {% if my_problems %}
-        {% for problem in my_problems %}
-            <div class="problem-card" style="opacity: {% if problem.is_solved %}0.6{% else %}1{% endif %};">
-                <div class="problem-info">
-                    <h3>
-                        {{ problem.title }}
-                        {% if problem.is_solved %}
-                            <span style="font-size: 12px; background: #28a745; color: white; padding: 2px 8px; border-radius: 10px;">Solved</span>
-                        {% endif %}
-                    </h3>
-                    <p style="font-size: 14px; color: #666; margin: 0;">{{ problem.description|truncatewords:8 }}</p>
-                </div>
-                
-                <div style="text-align: right;">
-                    <div style="font-weight: bold; color: #28a745; margin-bottom: 5px;">${{ problem.budget }}</div>
-                    
-                    {% if not problem.is_solved %}
-                        <!-- Edit Button (Opens Popup) -->
-                        <button onclick="openEditModal('{{ problem.id }}', '{{ problem.title|escapejs }}', '{{ problem.description|escapejs }}', '{{ problem.budget }}')" 
-                                style="background: none; border: none; color: #007bff; cursor: pointer; font-size: 14px; margin-right: 10px;">
-                            ✎ Edit
-                        </button>
-                        
-                        <a href="{% url 'mark_solved' problem.id %}" onclick="return confirm('Is this solved?')" style="text-decoration: none; color: #28a745; font-size: 14px; margin-right: 10px;">✓ Solved</a>
-                    {% endif %}
-                    
-                    <a href="{% url 'delete_problem' problem.id %}" onclick="return confirm('Delete this problem?')" style="text-decoration: none; color: #dc3545; font-size: 14px;">🗑 Delete</a>
-                </div>
+      {% for problem in my_problems %}
+        <div class="problem-card" style="opacity: {% if problem.is_solved %}0.6{% else %}1{% endif %};">
+          <div class="problem-info">
+            <h3 style="margin:0;">
+              {{ problem.title }}
+
+              {% if problem.is_solved %}
+                <span class="badge badge-green">Solved</span>
+              {% endif %}
+
+              {% if problem.pending_bids and problem.pending_bids > 0 %}
+                <span class="badge badge-orange">Pending bids: {{ problem.pending_bids }}</span>
+              {% endif %}
+            </h3>
+
+            <p style="font-size: 14px; color: #666; margin: 6px 0 0 0;">
+              {{ problem.description|truncatewords:8 }}
+            </p>
+
+            <div style="margin-top:8px;">
+              <a class="link-btn" href="{% url 'problem_detail' problem.id %}">
+                👥 Bids{% if problem.total_bids %} ({{ problem.total_bids }}){% endif %}
+              </a>
+              <span style="font-size:12px;color:#777;">(Click to accept/reject from details page)</span>
             </div>
-        {% endfor %}
+          </div>
+
+          <div style="text-align: right;">
+            <div style="font-weight: bold; color: #28a745; margin-bottom: 5px;">৳{{ problem.budget }}</div>
+
+            {% if not problem.is_solved %}
+              <button
+                type="button"
+                onclick="openEditModal('{{ problem.id }}', '{{ problem.title|escapejs }}', '{{ problem.description|escapejs }}', '{{ problem.budget }}')"
+                class="action-btn edit"
+              >
+                ✎ Edit
+              </button>
+
+              <!-- ✅ Solved MUST be POST because view has @require_POST -->
+              <form action="{% url 'mark_solved' problem.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button
+                  type="submit"
+                  class="action-btn solve"
+                  onclick="return confirm('Mark this problem as solved?')"
+                >
+                  ✓ Solved
+                </button>
+              </form>
+            {% endif %}
+
+            <!-- ✅ Delete MUST be POST because view has @require_POST -->
+            <form action="{% url 'delete_problem' problem.id %}" method="post" style="display:inline;">
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="action-btn delete"
+                onclick="return confirm('Delete this problem?')"
+              >
+                🗑 Delete
+              </button>
+            </form>
+
+          </div>
+        </div>
+      {% endfor %}
     {% else %}
-        <p style="text-align: center; color: #777;">You haven't posted any problems yet.</p>
+      <p style="text-align: center; color: #777;">You haven't posted any problems yet.</p>
     {% endif %}
 
   </main>
 
-  <!-- ============================ -->
-  <!-- EDIT MODAL (POPUP FORM)      -->
-  <!-- ============================ -->
+  <!-- EDIT MODAL -->
   <div id="editModal" class="modal">
     <div class="modal-content">
-        <span class="close-btn" onclick="closeEditModal()">&times;</span>
-        <h3 style="margin-top: 0;">Edit Problem</h3>
-        
-        <!-- ফর্মের অ্যাকশন জাভাস্ক্রিপ্ট দিয়ে সেট হবে -->
-        <form id="editForm" method="post">
-            {% csrf_token %}
-            
-            <label>Title</label>
-            <input type="text" id="edit_title" name="title" class="form-control" required>
+      <span class="close-btn" onclick="closeEditModal()">&times;</span>
+      <h3 style="margin-top: 0;">Edit Problem</h3>
 
-            <label>Description</label>
-            <textarea id="edit_desc" name="description" rows="4" class="form-control" required></textarea>
+      <form id="editForm" method="post">
+        {% csrf_token %}
 
-            <label>Budget ($)</label>
-            <input type="number" id="edit_budget" name="budget" class="form-control" required>
+        <label>Title</label>
+        <input type="text" id="edit_title" name="title" class="form-control" required>
 
-            <button type="submit" class="btn-save">Update Problem</button>
-        </form>
+        <label>Description</label>
+        <textarea id="edit_desc" name="description" rows="4" class="form-control" required></textarea>
+
+        <label>Budget (৳)</label>
+        <input type="number" step="0.01" id="edit_budget" name="budget" class="form-control" required>
+
+        <button type="submit" class="btn-save">Update Problem</button>
+      </form>
     </div>
   </div>
 
-  <!-- জাভাস্ক্রিপ্ট লজিক -->
   <script>
-    // Modal ওপেন করার ফাংশন
     function openEditModal(id, title, desc, budget) {
-        // ফর্মের ইনপুটে ভ্যালু বসানো
-        document.getElementById('edit_title').value = title;
-        document.getElementById('edit_desc').value = desc;
-        document.getElementById('edit_budget').value = budget;
-        
-        // ডাইনামিক URL তৈরি করা: /problem/edit/5/
-        document.getElementById('editForm').action = "/problem/edit/" + id + "/";
-        
-        // Modal দেখানো
-        document.getElementById('editModal').style.display = "block";
+      document.getElementById('edit_title').value = title;
+      document.getElementById('edit_desc').value = desc;
+      document.getElementById('edit_budget').value = budget;
+      document.getElementById('editForm').action = "/problem/edit/" + id + "/";
+      document.getElementById('editModal').style.display = "block";
     }
 
-    // Modal বন্ধ করার ফাংশন
     function closeEditModal() {
-        document.getElementById('editModal').style.display = "none";
+      document.getElementById('editModal').style.display = "none";
     }
 
-    // উইন্ডোর বাইরে ক্লিক করলে বন্ধ হবে
     window.onclick = function(event) {
-        if (event.target == document.getElementById('editModal')) {
-            closeEditModal();
-        }
+      if (event.target == document.getElementById('editModal')) {
+        closeEditModal();
+      }
     }
   </script>
 

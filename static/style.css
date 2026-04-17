@@ -1,21 +1,17 @@
-/* =========================================
-   বেসিক স্টাইল এবং ফন্ট
-========================================= */
-/* TEST-KOBIR-123 */
 * { box-sizing: border-box; }
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    color: #111; /* ডিফল্ট টেক্সট কালার */
+    color: #111; 
 }
 
 /* =========================================
-   হিরো সেকশন এবং ব্যাকগ্রাউন্ড ইমেজ (Home Page)
+(Home Page)
 ========================================= */
 .hero-section {
-    color: #fff; /* Home page-এ লেখা সাদা থাকবে */
+    color: #fff; 
     background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('img/background.jpg');
     background-size: cover;
     background-position: center;
@@ -24,7 +20,7 @@ body {
     flex-direction: column;
 }
 
-/* --- ১. রঙিন SolveX লোগো --- */
+/* --- SolveX logo--- */
 .logo {
     font-size: 40px;
     font-weight: 800;
@@ -36,8 +32,8 @@ body {
 }
 
 /* =========================================
-   নেভিগেশন বার (Navbar)
-========================================= */
+ (Navbar)
+ */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -55,7 +51,7 @@ body {
     gap: 18px; /* margin-left এর বদলে gap */
 }
 
-/* লিঙ্ক স্টাইল (Home page এর জন্য) */
+/* link style( home page) */
 .navbar nav ul li a {
     text-decoration: none;
     color: #fff; /* Home page-এর navbar এ সাদা */
@@ -70,7 +66,7 @@ body {
     transform: translateY(-2px);
 }
 
-/* আন্ডারলাইন ইফেক্ট */
+/*underline effect */
 .navbar nav ul li a::after {
     content: '';
     position: absolute;
@@ -87,7 +83,7 @@ body {
     width: 100%;
 }
 
-/* Login এবং Register বাটন */
+/* Login and Register button*/
 .login-btn, .register-btn {
     padding: 10px 22px;
     border-radius: 6px;
@@ -111,9 +107,9 @@ body {
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.35);
 }
 
-/* =========================================
-   Home page এর main section
-========================================= */
+/* 
+   Home page main section
+ */
 .main-content {
     flex-grow: 1;
     display: flex;
@@ -132,7 +128,7 @@ body {
     line-height: 1.2;
 }
 
-/* সাবটাইটেল */
+/* subtitle */
 .hero-text p {
     font-size: 20px;
     font-style: italic;
@@ -146,11 +142,11 @@ body {
     border-left: 5px solid #adee08;
 }
 
-/* Get Started বাটন */
+/* Get Started buttom */
 .cta-button {
     display: inline-block;
     padding: 18px 40px;
-    background-color: #fca311;
+    background-color: #fcf811;
     color: #14213d;
     text-decoration: none;
     font-size: 20px;
@@ -165,7 +161,7 @@ body {
     box-shadow: 0 8px 14px rgba(0, 0, 0, 0.3);
 }
 
-/* ফিচার লিস্ট */
+
 .features-list { max-width: 45%; }
 
 .features-list ul {
@@ -196,15 +192,15 @@ body {
     font-size: 22px;
 }
 
-/* =========================================
+/* 
    Browse Page Specific Styles
-========================================= */
+ */
 .browse-page-body {
     background-color: #94b5e6;
     color: #111;
 }
 
-/* Browse page এ navbar link কালো/ডার্ক */
+
 .browse-page-body .navbar nav ul li a {
     color: #14213d;
 }
@@ -216,7 +212,7 @@ body {
     padding: 0 20px;
 }
 
-/* সার্চ বার */
+/* search bar */
 .filter-bar {
     display: flex;
     gap: 10px;
@@ -236,7 +232,7 @@ body {
     font-size: 15px;
 }
 
-/* সার্চ বাটন */
+/* sarch bar */
 .search-btn {
     padding: 12px 16px;
     background-color: #160252;
@@ -246,7 +242,7 @@ body {
     cursor: pointer;
 }
 
-/* Post a New Problem বাটনের স্টাইল (এটা <a> tag) */
+/* Post a New Problem  */
 .post-problem-btn {
     padding: 12px 16px;
     background-color: #160252;
@@ -316,7 +312,7 @@ body {
 }
 
 .budget {
-    background-color: #2a9d8f;
+    background-color: #01100e;
     color: #fff;
     padding: 5px 12px;
     border-radius: 999px;
@@ -333,15 +329,15 @@ body {
     font-weight: 700;
 }
 
-/* =========================================
+/* 
    Authentication (Login/Register/Post) Page Styles
-========================================= */
+*/
 .auth-page-body {
     background-color: #d0ddf1;
     color: #111;
 }
 
-/* Auth page এ navbar সাদা */
+/* Auth page e navbar white */
 .auth-page-body .navbar {
     background: #fff;
     box-shadow: 0 4px 14px rgba(0,0,0,.08);
@@ -430,9 +426,9 @@ body {
     text-decoration: underline;
 }
 
-/* =========================================
+/* 
    Validation/Error Box
-========================================= */
+ */
 .error-box {
     background-color: #ffebee;
     color: #c62828;
@@ -445,7 +441,7 @@ body {
     display: none;
 }
 
-/* Success box (login successful ইত্যাদি দেখাতে) */
+/* Success box (login successful */
 .success-box {
     max-width: 980px;
     margin: 14px auto;
@@ -459,16 +455,13 @@ body {
     display: none;
 }
 
-/* =========================================
-   Browse/Dashboard topbar: Logo নিচে Profile + ≡ menu
-   (আপনার চাহিদা অনুযায়ী topbar transparent থাকবে)
-========================================= */
+
 .browse-topbar {
     background: transparent;
     box-shadow: none;
 }
 
-/* logo নিচে profile */
+/* logo under profile */
 .logo-stack {
     display: flex;
     flex-direction: column;
@@ -530,7 +523,7 @@ body {
 }
 
 
-/* ===== Profile (Logo এর নিচে) - Circle + Text (FIXED) ===== */
+/* ===== Profile  - Circle + Text (FIXED) ===== */
 .mini-profile{
   display: inline-flex;
   align-items: center;
@@ -539,7 +532,7 @@ body {
   text-decoration: none;
   color: #14213d;
   font-weight: 900;
-  white-space: nowrap; /* My Profile এক লাইনে থাকবে */
+  white-space: nowrap; /* My Profile  */
 }
 
 .mini-avatar{
@@ -559,14 +552,148 @@ body {
 
 .mini-profile-text{
   font-size: 14px;
-}/* প্রব্লেম টাইটেল লিংক স্টাইল */
+}
+/*problem title */
 .problem-title-link {
-    text-decoration: none; /* লিংক এর নিচে দাগ থাকবে না */
-    color: #333;           /* শুরুতে কালো রঙের থাকবে */
-    transition: color 0.3s; /* হোভার করলে স্মুথ কালার চেঞ্জ হবে */
+    text-decoration: none; 
+    color: #333;           
+    transition: color 0.3s; 
 }
 
 .problem-title-link:hover {
-    color: #007bff;        /* মাউস নিলে নীল রঙের হয়ে যাবে */
-    text-decoration: underline; /* মাউস নিলে নিচে দাগ আসবে */
+    color: #007bff;       
+    text-decoration: underline; 
+}
+/* ===========================
+   Notifications Page Styles
+   =========================== */
+
+.sx-page-wrap{
+  min-height: calc(100vh - 90px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 50px 16px;
+}
+
+.sx-card {
+  width: 100%;
+  max-width: 650px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.10);
+  border: 1px solid #e9ecef;
+  overflow: hidden;
+}
+
+.sx-card-header{
+  padding: 22px 24px;
+  border-bottom: 1px solid #edf2f7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sx-card-header h2{
+  margin: 0;
+  font-size: 28px;
+  color: #0d6efd;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.sx-unread-pill{
+  background: #0d6efd;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.sx-list{
+  padding: 10px 0;
+}
+
+.sx-notif-item{
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 14px 18px;
+  margin: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #eef2f7;
+  background: #f8fafc;
+  transition: 0.2s;
+}
+
+.sx-notif-item:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(0,0,0,0.08);
+  border-color: #dbeafe;
+}
+
+.sx-notif-top{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.sx-notif-msg{
+  font-weight: 700;
+  color: #111827;
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.sx-badge-new{
+  background: #ff3b30;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.sx-notif-meta{
+  font-size: 13px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.sx-empty{
+  padding: 30px 18px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 15px;
+}
+
+.sx-msg-wrap{
+  padding: 0 16px;
+  margin-top: 16px;
+}
+
+.sx-msg{
+  max-width: 650px;
+  width: 100%;
+  margin: 0 auto 16px auto;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #e2e6ea;
+  border: 1px solid #cbd5e1;
+  color: #111827;
+}
+/* Bidder profile link style */
+.bidder-profile-link {
+    text-decoration: none;  /* By default, no underline */
+    color: inherit;         /* Inherit color from parent (black) */
+    transition: text-decoration 0.2s; /* Smooth transition for hover */
+}
+
+.bidder-profile-link:hover {
+    text-decoration: underline; /* Underline on hover */
+    color: #0056b3;             /* Optional: change color on hover */
 }

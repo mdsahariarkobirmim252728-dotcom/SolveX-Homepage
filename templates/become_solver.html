@@ -1,0 +1,45 @@
+{% extends 'base.html' %} {# যদি base.html ব্যবহার করেন #}
+
+{% block title %}Become a Solver - SolveX{% endblock %}
+
+{% block content %}
+<div class="form-container" style="max-width: 550px; margin: 50px auto; padding: 30px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+    <h2 style="text-align: center; margin-bottom: 25px;">Become a Problem Solver</h2>
+    <p style="text-align: center; color: #666; margin-bottom: 25px;">Fill in the details below to start bidding on problems.</p>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div style="padding: 10px; background: #f8d7da; color: #721c24; border-radius: 4px; margin-bottom: 15px;">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="form-label">Professional Title / Headline</label>
+            <input type="text" name="professional_title" class="form-control" placeholder="e.g., Expert Web Developer" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="text" name="phone_number" class="form-control" placeholder="Required for solvers" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Skills (comma-separated)</label>
+            <input type="text" name="skills" class="form-control" placeholder="e.g., Python, Django, JavaScript" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Portfolio / Website Link (Optional)</label>
+            <input type="url" name="portfolio_link" class="form-control" placeholder="https://your-portfolio.com">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Address</label>
+            <textarea name="address" rows="2" class="form-control" placeholder="Required for solvers" required></textarea>
+        </div>
+        <div class="form-group">
+            <label class="form-label">About You / Bio (Optional)</label>
+            <textarea name="bio" rows="3" class="form-control"></textarea>
+        </div>
+        <button type="submit" class="btn-submit" style="width: 100%; padding: 12px; background: #28a745; border-radius: 6px;">Submit Application</button>
+    </form>
+</div>
+{% endblock %}

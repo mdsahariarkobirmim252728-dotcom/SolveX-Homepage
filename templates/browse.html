@@ -28,6 +28,13 @@
   <nav>
     <ul>
       <li><a href="{% url 'home' %}">Home</a></li>
+      {% if user.is_authenticated %}
+  <li>
+    <a href="{% url 'notifications' %}">
+      Notifications{% if unread_notifications_count > 0 %} ({{ unread_notifications_count }}){% endif %}
+    </a>
+  </li>
+{% endif %}
 
       {% if user.is_authenticated %}
         <li class="kebab">
@@ -83,7 +90,7 @@
 </h3>
         <p class="problem-description">{{ p.description|truncatechars:140 }}</p>
         <div class="card-footer">
-          <span class="budget">${{ p.budget }}</span>
+          <span class="budget (BTD)">{{ p.budget }}</span>
           <span class="tag">New</span>
         </div>
       </div>

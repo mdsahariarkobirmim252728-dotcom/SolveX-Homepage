@@ -18,6 +18,13 @@
     <nav>
       <ul>
         <li><a href="{% url 'home' %}">Home</a></li>
+        {% if user.is_authenticated %}
+  <li>
+    <a href="{% url 'notifications' %}">
+      Notifications{% if unread_notifications_count > 0 %} ({{ unread_notifications_count }}){% endif %}
+    </a>
+  </li>
+{% endif %}
         <li><a href="{% url 'browse_problems' %}">Browse Problems</a></li>
 
         {% if user.is_authenticated %}

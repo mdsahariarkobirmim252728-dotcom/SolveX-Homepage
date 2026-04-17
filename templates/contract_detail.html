@@ -1,0 +1,221 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contract #{{ contract.id }} - SolveX</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}?v={% now 'U' %}">
+
+  <style>
+    .wrap { max-width: 900px; margin: 40px auto; background:#fff; padding: 24px; border:1px solid #eee; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+    .row { display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+    .box { flex: 1 1 260px; border:1px solid #eee; border-radius:10px; padding:14px; background:#fafafa; }
+    .badge { display:inline-block; padding:4px 10px; border-radius:999px; font-weight:800; font-size:12px; }
+    .b1 { background:#e7f1ff; color:#0b5ed7; }
+    .b2 { background:#fff3cd; color:#664d03; }
+    .b3 { background:#d1e7dd; color:#146c43; }
+    .muted { color:#666; font-size:13px; }
+    a.link { color:#0d6efd; text-decoration:none; font-weight:800; }
+    a.link:hover { text-decoration:underline; }
+
+    .card { margin-top:14px; padding:14px; border:1px solid #eee; border-radius:10px; background:#fff; }
+    .solution { white-space:pre-wrap; }
+    textarea { width:100%; padding:10px; border:1px solid #ddd; border-radius:8px; box-sizing:border-box; }
+
+    .btn { display:inline-block; padding:10px 12px; border-radius:8px; text-decoration:none; font-weight:800; border:1px solid #ddd; background:#fff; cursor:pointer; }
+    .btn-blue { background:#0d6efd; border-color:#0d6efd; color:#fff; }
+    .btn-green { background:#198754; border-color:#198754; color:#fff; }
+    .btn-red { background:#dc3545; border-color:#dc3545; color:#fff; }
+
+    .alert { padding:12px; border-radius:10px; border:1px solid #eee; margin-bottom: 12px; }
+    .alert-info { background:#e7f1ff; border-color:#cfe2ff; }
+    .alert-warn { background:#fff3cd; border-color:#ffecb5; }
+    .alert-success { background:#d1e7dd; border-color:#badbcc; }
+  </style>
+</head>
+
+<body class="auth-page-body">
+
+  <header class="navbar">
+    <div class="logo">SolveX</div>
+    <nav>
+      <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        {% if user.is_authenticated %}
+          <li>
+            <a href="{% url 'notifications' %}">
+              Notifications{% if unread_notifications_count %} ({{ unread_notifications_count }}){% endif %}
+            </a>
+          </li>
+        {% endif %}
+        <li><a href="{% url 'browse_problems' %}">Browse Problems</a></li>
+        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'logout' %}" class="login-btn">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="wrap">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-info">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <h2 style="margin-top:0;">Contract #{{ contract.id }}</h2>
+
+    <div class="muted" style="margin-bottom:10px;">
+      Problem: <a class="link" href="{% url 'problem_detail' problem.id %}">{{ problem.title }}</a>
+    </div>
+
+    <div style="margin-bottom:14px;">
+      <span class="badge b1">Status: {{ contract.status }}</span>
+      <span class="badge b2" style="margin-left:8px;">Payment: {{ contract.payment_status }}</span>
+      <span class="badge b3" style="margin-left:8px;">Revisions: {{ contract.revision_count }}/{{ contract.max_revisions }}</span>
+    </div>
+
+    <div class="row">
+      <div class="box">
+        <h4 style="margin:0 0 8px 0;">Owner</h4>
+        <div><a class="link" href="{% url 'public_profile' owner.id %}">{{ owner.name }}</a></div>
+        <div class="muted">{{ owner.email }}</div>
+
+        {% if owner.email %}
+          <a class="btn" style="margin-top:10px;" href="mailto:{{ owner.email }}?subject=SolveX Contract %23{{ contract.id }}">
+            Email Owner
+          </a>
+        {% endif %}
+
+        {% if not is_owner %}
+          <form method="post" action="{% url 'report_user' owner.id %}" style="margin-top:10px;">
+            {% csrf_token %}
+            <input type="hidden" name="contract_id" value="{{ contract.id }}">
+            <textarea name="reason" rows="3" placeholder="Report reason..." required></textarea>
+            <button type="submit" class="btn btn-red" style="margin-top:8px; width:100%;">Report Owner</button>
+          </form>
+        {% endif %}
+      </div>
+
+      <div class="box">
+        <h4 style="margin:0 0 8px 0;">Solver</h4>
+        <div><a class="link" href="{% url 'public_profile' solver.id %}">{{ solver.name }}</a></div>
+        <div class="muted">{{ solver.email }}</div>
+
+        {% if solver.email %}
+          <a class="btn" style="margin-top:10px;" href="mailto:{{ solver.email }}?subject=SolveX Contract %23{{ contract.id }}">
+            Email Solver
+          </a>
+        {% endif %}
+
+        {% if is_owner %}
+          <form method="post" action="{% url 'report_user' solver.id %}" style="margin-top:10px;">
+            {% csrf_token %}
+            <input type="hidden" name="contract_id" value="{{ contract.id }}">
+            <textarea name="reason" rows="3" placeholder="Report reason..." required></textarea>
+            <button type="submit" class="btn btn-red" style="margin-top:8px; width:100%;">Report Solver</button>
+          </form>
+        {% endif %}
+      </div>
+
+      <div class="box">
+        <h4 style="margin:0 0 8px 0;">Agreed Amount</h4>
+        <div style="font-weight:900; font-size:18px;">{{ contract.agreed_amount }}</div>
+        <div class="muted">Accepted bid: {{ contract.accepted_bid_id }}</div>
+      </div>
+    </div>
+
+    {% if contract.owner_feedback %}
+      <div class="card alert alert-warn">
+        <strong>Owner Feedback / Revision Notes:</strong>
+        <div class="solution" style="margin-top:8px; white-space:pre-wrap;">{{ contract.owner_feedback }}</div>
+      </div>
+    {% endif %}
+
+    <div class="card">
+      <h4 style="margin:0 0 8px 0;">Latest Submission (Text + Link)</h4>
+      {% if contract.solution_text %}
+        <div class="solution">{{ contract.solution_text }}</div>
+      {% else %}
+        <div class="muted">No submission yet.</div>
+      {% endif %}
+    </div>
+
+    {# ===== Payment confirmation UX ===== #}
+    {% if is_owner and contract.status == "Completed" and contract.payment_status == "AwaitingConfirmation" %}
+      <div class="card alert alert-warn">
+        <strong>Waiting for confirmation:</strong>
+        Solver has not confirmed payment receipt yet.
+      </div>
+    {% endif %}
+
+    {% if contract.payment_status == "Done" %}
+      <div class="card alert alert-success">
+        <strong>Payment confirmed:</strong> Payment status is Done.
+      </div>
+    {% endif %}
+
+    {% if not is_owner %}
+      {% if contract.status == "Completed" and contract.payment_status == "AwaitingConfirmation" %}
+        <div class="card">
+          <h4 style="margin:0 0 10px 0;">Payment Confirmation</h4>
+          <div class="muted" style="margin-bottom:10px;">
+            The owner marked payment as sent. Confirm once you receive it.
+          </div>
+          <form method="post" action="{% url 'contract_confirm_payment' contract.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-green" style="width:100%;"
+              onclick="return confirm('Confirm that you received the payment?')">
+              Confirm Payment Received
+            </button>
+          </form>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {# ===== Work submit / owner actions ===== #}
+    {% if not is_owner %}
+      {% if contract.status != "Completed" and contract.status != "Canceled" %}
+        <div class="card">
+          <h4 style="margin:0 0 10px 0;">Submit Work</h4>
+          <form method="post" action="{% url 'contract_submit_work' contract.id %}">
+            {% csrf_token %}
+            <textarea name="solution_text" rows="6" required placeholder="Paste your solution link + explanation..."></textarea>
+            <button type="submit" class="btn btn-blue" style="margin-top:10px; width:100%;">Submit</button>
+          </form>
+        </div>
+      {% endif %}
+    {% else %}
+      {% if contract.status != "Completed" and contract.status != "Canceled" %}
+        <div class="card">
+          <h4 style="margin:0 0 10px 0;">Owner Actions</h4>
+
+          <form method="post" action="{% url 'contract_request_revision' contract.id %}">
+            {% csrf_token %}
+            <textarea name="owner_feedback" rows="4" required placeholder="Write what needs to be fixed (Revision feedback)..."></textarea>
+            <button type="submit" class="btn btn-red" style="margin-top:10px; width:100%;">
+              Request Revision
+            </button>
+            <div class="muted" style="margin-top:8px;">
+              After {{ contract.max_revisions }} revisions, the contract will be canceled automatically and bidding will reopen.
+            </div>
+          </form>
+
+          <form method="post" action="{% url 'contract_approve' contract.id %}" style="margin-top:12px;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-green" style="width:100%;"
+              onclick="return confirm('Approve this work and mark payment as sent (solver must confirm receipt)?')">
+              Approve (Mark Payment as Sent)
+            </button>
+          </form>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    <div style="margin-top:14px;">
+      <a class="btn btn-blue" href="{% url 'problem_detail' problem.id %}">Back to Problem</a>
+    </div>
+  </div>
+
+</body>
+</html>
