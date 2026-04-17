@@ -1,4 +1,3 @@
-```html
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -110,6 +109,7 @@
     </div>
 
     {% if user.is_authenticated %}
+
       {% if is_owner %}
         <div class="alert-info">
           <strong>Owner view:</strong> Review bids and manage applicants below.
@@ -190,8 +190,27 @@
         </div>
 
       {% else %}
-        {% if problem.is_solved and not problem.accepted_bid_id %}
-          <div class="alert-warning">Bidding is closed for this problem.</div>
+
+        {# ---------- Non-owner: show CLOSED first if solved ---------- #}
+        {% if problem.is_solved %}
+          {% if my_bid and my_bid.status == "Accepted" %}
+            <div class="alert-info">
+              <strong>Accepted.</strong> Your bid was accepted for this problem.
+              <div>
+                <a class="btn-contract" href="{% url 'contract_for_problem' problem.id %}">View Contract</a>
+              </div>
+            </div>
+          {% elif my_bid and my_bid.status == "Rejected" %}
+            <div class="alert-warning">
+              <strong>Rejected.</strong> This problem is already closed.
+            </div>
+          {% elif my_bid and my_bid.status == "Pending" %}
+            <div class="alert-warning">
+              <strong>Applied.</strong> This problem is already closed.
+            </div>
+          {% else %}
+            <div class="alert-warning">Bidding is closed for this problem.</div>
+          {% endif %}
 
         {% elif not is_solver %}
           <div class="alert-danger">
@@ -252,25 +271,21 @@
             </div>
 
           {% else %}
-            {% if problem.is_solved and problem.accepted_bid_id %}
-              <div class="alert-warning">Bidding is closed for this problem.</div>
-            {% else %}
-              <div class="bid-section">
-                <h3 class="bid-title">Apply for this Job</h3>
-                <form action="{% url 'submit_bid' problem.id %}" method="post">
-                  {% csrf_token %}
-                  <div class="form-group">
-                    <label class="form-label">Your Bid Amount</label>
-                    <input type="number" step="0.01" name="amount" required class="form-control" placeholder="e.g. 500">
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Cover Letter / Proposal</label>
-                    <textarea name="proposal" rows="4" required class="form-control" placeholder="Why are you the best fit?"></textarea>
-                  </div>
-                  <button type="submit" class="btn-apply">Place Bid</button>
-                </form>
-              </div>
-            {% endif %}
+            <div class="bid-section">
+              <h3 class="bid-title">Apply for this Job</h3>
+              <form action="{% url 'submit_bid' problem.id %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label class="form-label">Your Bid Amount</label>
+                  <input type="number" step="0.01" name="amount" required class="form-control" placeholder="e.g. 500">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Cover Letter / Proposal</label>
+                  <textarea name="proposal" rows="4" required class="form-control" placeholder="Why are you the best fit?"></textarea>
+                </div>
+                <button type="submit" class="btn-apply">Place Bid</button>
+              </form>
+            </div>
           {% endif %}
 
         {% endif %}
@@ -293,4 +308,3 @@
 
 </body>
 </html>
-```

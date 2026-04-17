@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Contract #{{ contract.id }} - SolveX</title>
+  <title>Contract Details - SolveX</title>
   <link rel="stylesheet" href="{% static 'style.css' %}?v={% now 'U' %}">
 
   <style>
@@ -63,7 +63,7 @@
       {% endfor %}
     {% endif %}
 
-    <h2 style="margin-top:0;">Contract #{{ contract.id }}</h2>
+    <h2 style="margin-top:0;">Contract Details</h2>
 
     <div class="muted" style="margin-bottom:10px;">
       Problem: <a class="link" href="{% url 'problem_detail' problem.id %}">{{ problem.title }}</a>
@@ -78,17 +78,21 @@
     <div class="row">
       <div class="box">
         <h4 style="margin:0 0 8px 0;">Owner</h4>
-        <div><a class="link" href="{% url 'public_profile' owner.id %}">{{ owner.name }}</a></div>
-        <div class="muted">{{ owner.email }}</div>
+        <div>
+          <a class="link" href="{% url 'public_profile' owner.id %}">{{ owner.name }}</a>
+        </div>
 
-        {% if owner.email %}
-          <a class="btn" style="margin-top:10px;" href="mailto:{{ owner.email }}?subject=SolveX Contract %23{{ contract.id }}">
+        {# Solver will see Owner email + mailto. Owner will NOT see own email. #}
+        {% if not is_owner and owner.email %}
+          <div class="muted" style="margin-top:6px;">{{ owner.email }}</div>
+          <a class="btn" style="margin-top:10px;" href="mailto:{{ owner.email }}?subject=SolveX Contract">
             Email Owner
           </a>
         {% endif %}
 
+        {# Solver can report Owner #}
         {% if not is_owner %}
-          <form method="post" action="{% url 'report_user' owner.id %}" style="margin-top:10px;">
+          <form method="post" action="{% url 'report_user' owner.id %}" style="margin-top:12px;">
             {% csrf_token %}
             <input type="hidden" name="contract_id" value="{{ contract.id }}">
             <textarea name="reason" rows="3" placeholder="Report reason..." required></textarea>
@@ -99,17 +103,21 @@
 
       <div class="box">
         <h4 style="margin:0 0 8px 0;">Solver</h4>
-        <div><a class="link" href="{% url 'public_profile' solver.id %}">{{ solver.name }}</a></div>
-        <div class="muted">{{ solver.email }}</div>
+        <div>
+          <a class="link" href="{% url 'public_profile' solver.id %}">{{ solver.name }}</a>
+        </div>
 
-        {% if solver.email %}
-          <a class="btn" style="margin-top:10px;" href="mailto:{{ solver.email }}?subject=SolveX Contract %23{{ contract.id }}">
+        {# Owner will see Solver email + mailto. Solver will NOT see own email. #}
+        {% if is_owner and solver.email %}
+          <div class="muted" style="margin-top:6px;">{{ solver.email }}</div>
+          <a class="btn" style="margin-top:10px;" href="mailto:{{ solver.email }}?subject=SolveX Contract">
             Email Solver
           </a>
         {% endif %}
 
+        {# Owner can report Solver #}
         {% if is_owner %}
-          <form method="post" action="{% url 'report_user' solver.id %}" style="margin-top:10px;">
+          <form method="post" action="{% url 'report_user' solver.id %}" style="margin-top:12px;">
             {% csrf_token %}
             <input type="hidden" name="contract_id" value="{{ contract.id }}">
             <textarea name="reason" rows="3" placeholder="Report reason..." required></textarea>
@@ -121,7 +129,6 @@
       <div class="box">
         <h4 style="margin:0 0 8px 0;">Agreed Amount</h4>
         <div style="font-weight:900; font-size:18px;">{{ contract.agreed_amount }}</div>
-        <div class="muted">Accepted bid: {{ contract.accepted_bid_id }}</div>
       </div>
     </div>
 
@@ -141,11 +148,10 @@
       {% endif %}
     </div>
 
-    {# ===== Payment confirmation UX ===== #}
+    {# Payment confirmation UI (if implemented) #}
     {% if is_owner and contract.status == "Completed" and contract.payment_status == "AwaitingConfirmation" %}
       <div class="card alert alert-warn">
-        <strong>Waiting for confirmation:</strong>
-        Solver has not confirmed payment receipt yet.
+        <strong>Waiting for confirmation:</strong> Solver has not confirmed payment receipt yet.
       </div>
     {% endif %}
 
@@ -173,7 +179,6 @@
       {% endif %}
     {% endif %}
 
-    {# ===== Work submit / owner actions ===== #}
     {% if not is_owner %}
       {% if contract.status != "Completed" and contract.status != "Canceled" %}
         <div class="card">
